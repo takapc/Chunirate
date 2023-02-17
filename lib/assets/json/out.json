@@ -1,0 +1,38 @@
+[
+    {
+        "meta": {
+            "id": "00105450e5b83f4b",
+            "title": "XL TECHNO",
+            "genre": "VARIETY",
+            "artist": "from PACA PACA PASSION",
+            "release": "2016-02-04",
+            "bpm": 130
+        },
+        "data": {
+            "BAS": {
+                "level": 2,
+                "const": 0,
+                "maxcombo": 326,
+                "is_const_unknown": false
+            },
+            "ADV": {
+                "level": 5,
+                "const": 0,
+                "maxcombo": 637,
+                "is_const_unknown": false
+            },
+            "EXP": {
+                "level": 11,
+                "const": 11.1,
+                "maxcombo": 873,
+                "is_const_unknown": false
+            },
+            "MAS": {
+                "level": 12,
+                "const": 12.6,
+                "maxcombo": 1292,
+                "is_const_unknown": false
+            }
+        }
+    }
+]
