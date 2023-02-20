@@ -19,7 +19,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 const favorites = 'favorite_musics';
 
-const version = 1.0;
+const version = 1.1;
 
 String token = "";
 
