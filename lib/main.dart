@@ -24,8 +24,8 @@ const version = 1.0;
 String token = "";
 
 void main() async {
-  await DotEnv().load(fileName: ".env");
-  token = DotEnv().env['TOKEN_KEY'].toString();
+  await dotenv.load(fileName: '.env');
+  token = dotenv.get("TOKEN_KEY");
   await Hive.initFlutter();
   await Hive.openBox(favorites);
   await Hive.openBox('Settings');

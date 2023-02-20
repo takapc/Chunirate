@@ -99,131 +99,144 @@ class _CalcPageState extends State<CalcPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('詳細'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              title: const Text('詳細'),
+            ),
+            body: SingleChildScrollView(
+              child: Column(
                 children: [
-                  Container(
-                    height: 100,
-                    width: double.infinity,
-                    margin: const EdgeInsets.fromLTRB(100, 0, 100, 0),
-                    alignment: Alignment.center,
-                    child: Center(
-                        child: TextField(
-                      decoration: InputDecoration(hintText: 'スコアを入力'),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      controller:
-                          TextEditingController(text: _calcScore.toString()),
-                      style: TextStyle(fontSize: 45),
-                      onSubmitted: (s) {
-                        setState(() {
-                          _calcScore = int.parse(s);
-                        });
-                        if (_calcScore < 1000000) {
-                        } else {
-                          setState(() {
-                            score = _calcScore;
-                          });
-                        }
-                      },
-                    )),
+                  Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: double.infinity,
+                        margin: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                        alignment: Alignment.center,
+                        child: Center(
+                            child: TextField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(hintText: 'スコアを入力'),
+                          style: TextStyle(fontSize: 35),
+                          onChanged: (s) {
+                            setState(() {
+                              try {
+                                _calcScore = int.parse(s);
+                                // ignore: empty_catches
+                              } catch (e) {}
+                            });
+                            if (_calcScore < 1000000) {
+                            } else {
+                              setState(() {
+                                score = _calcScore;
+                              });
+                            }
+                          },
+                        )),
+                      ),
+                      MusicCard(
+                          widget.title,
+                          widget.genre,
+                          widget.rate,
+                          widget.level,
+                          widget.combo,
+                          widget.diff,
+                          false,
+                          widget.music),
+                      const Icon(Icons.arrow_drop_down),
+                      MusicCard(
+                          widget.title,
+                          widget.genre,
+                          getRate(widget.rate, _calcScore),
+                          widget.level,
+                          widget.combo,
+                          widget.diff,
+                          false,
+                          widget.music),
+                    ],
                   ),
-                  MusicCard(
-                      widget.title,
-                      widget.genre,
-                      widget.rate,
-                      widget.level,
-                      widget.combo,
-                      widget.diff,
-                      false,
-                      widget.music),
-                  const Icon(Icons.arrow_drop_down),
-                  MusicCard(
-                      widget.title,
-                      widget.genre,
-                      getRate(widget.rate, _calcScore),
-                      widget.level,
-                      widget.combo,
-                      widget.diff,
-                      false,
-                      widget.music),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(50, 10, 50, 10),
+                        padding: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 143, 210, 240),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Text(
+                          "Other Levels",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: sameNameMusic.length,
+                        itemBuilder: (context, index) {
+                          var tmp = sameNameMusic[index];
+                          return MusicCard(
+                              tmp.title,
+                              tmp.genre,
+                              tmp.rate,
+                              tmp.level,
+                              tmp.combo,
+                              tmp.diff,
+                              true,
+                              widget.music);
+                        },
+                      ),
+                    ],
+                  ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(50, 10, 50, 10),
+                    margin: const EdgeInsets.fromLTRB(50, 0, 50, 10),
                     padding: const EdgeInsets.all(5),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 143, 210, 240),
                         borderRadius: BorderRadius.circular(10)),
                     child: const Text(
-                      "Other Levels",
+                      "許容値",
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: sameNameMusic.length,
-                    itemBuilder: (context, index) {
-                      var tmp = sameNameMusic[index];
-                      return MusicCard(tmp.title, tmp.genre, tmp.rate,
-                          tmp.level, tmp.combo, tmp.diff, true, widget.music);
-                    },
-                  ),
+                  SizedBox(
+                      width: double.infinity,
+                      child: SingleChildScrollView(
+                        child: DataTable(columns: const [
+                          DataColumn(
+                            label: Text(
+                              '　JUSTICE',
+                              style: TextStyle(color: Colors.brown),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              '　ATTACK',
+                              style: TextStyle(color: Colors.green),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              '　MISS',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 172, 172, 172)),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ], rows: getRow()),
+                      )),
                 ],
               ),
-              Container(
-                margin: const EdgeInsets.fromLTRB(50, 0, 50, 10),
-                padding: const EdgeInsets.all(5),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 143, 210, 240),
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Text(
-                  "許容値",
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              SizedBox(
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: DataTable(columns: const [
-                      DataColumn(
-                        label: Text(
-                          '　JUSTICE',
-                          style: TextStyle(color: Colors.brown),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          '　ATTACK',
-                          style: TextStyle(color: Colors.green),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          '　MISS',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 172, 172, 172)),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ], rows: getRow()),
-                  )),
-            ],
-          ),
-        ));
+            )));
   }
 }
 
@@ -248,6 +261,9 @@ class Score {
   }
 
   List<Score> getKyoyouByCombo(int target) {
+    if (combo == 0) {
+      return [Score(combo, 0, 0, 0, combo)];
+    }
     var ns = 1000000 / combo;
     var justiceLost = ns * 0.01;
     var attackLost = ns * 0.51;
